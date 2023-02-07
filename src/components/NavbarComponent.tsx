@@ -45,10 +45,10 @@ const useStyles = createStyles((theme) => ({
 
 export default function NavbarComponent() {
   const [opened, { toggle }] = useDisclosure(false);
-  const { classes, cx } = useStyles();
+  const { classes } = useStyles();
 
   const links = [
-    { title: "Kayıtları Gör", href: "/locations" },
+    { title: "Kayıtları Gör", href: "/records" },
   ];
 
   return (
