@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { createStyles, Table, ScrollArea } from "@mantine/core";
 import { type RecordType } from "../lib/schema/Record";
+import Link from "next/link";
+import { IconArrowRight } from "@tabler/icons";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -29,12 +31,9 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-
-export function RecordTable(props: {data: RecordType[]}) {
+export function RecordTable(props: { data: RecordType[] }) {
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
-
-
 
   const rows = props.data.map((row) => (
     <tr key={row.created_at}>
@@ -42,14 +41,25 @@ export function RecordTable(props: {data: RecordType[]}) {
       <td>{row.phone ? row.phone : "-"}</td>
       <td>{row.need}</td>
       <td>{row.nearest_place}</td>
-      <td>{row.loc_words}</td>
+      <td>
+        {new Date(1000 * row.created_at).toLocaleString("tr", {
+          localeMatcher: "best fit",
+        })}
+      </td>
+      <td>
+        <Link
+          href={"/map3w?words=" + row.loc_words}
+          style={{ textDecoration: "none" }}
+        >
+          <IconArrowRight size={32} color="teal" />
+        </Link>
+      </td>
     </tr>
   ));
 
   return (
     <ScrollArea
-      sx={{ height: 300 }}
-      className="w-full"
+      className="h-full w-full"
       onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
     >
       <Table sx={{ minWidth: 700 }}>
@@ -58,8 +68,9 @@ export function RecordTable(props: {data: RecordType[]}) {
             <th>Ad Soyad</th>
             <th>Telefon</th>
             <th>İhtiyaç</th>
-            <th>En Yakın Yer</th>
-            <th>Konum</th>
+            <th>En Yakın Bölge</th>
+            <th>Eklenme Tarihi</th>
+            <th>Konumu Gör</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>

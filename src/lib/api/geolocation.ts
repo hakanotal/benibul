@@ -25,8 +25,9 @@ export async function convert3WordsToCoords(words:string) {
         words +
         "&key=" +
         API_KEY +
-        "&format=geojson"
+        "&format=json"
     ).then((res) => res.json());
     if (response.error) throw response.error;
-    return response;
+    const { lat, lng } = response.coordinates;
+    return { latitude: lat, longitude: lng };
 }

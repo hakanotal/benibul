@@ -5,7 +5,6 @@ import type { LatLngExpression, LatLngTuple } from "leaflet";
 import { icon } from "leaflet";
 import { LoadingOverlay } from "@mantine/core";
 
-
 const ICON = icon({
   iconUrl: "/pin.svg",
   iconSize: [32, 32],
@@ -17,6 +16,7 @@ export default function Map(props: { coords: any }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if(!props.coords) return;
     setCenter([props.coords.latitude, props.coords.longitude]);
     setLoading(false);
   }, [props.coords]);
