@@ -6,6 +6,8 @@ import {
   NativeSelect,
   LoadingOverlay,
 } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
+import { IconX } from "@tabler/icons";
 import { useState } from "react";
 import { saveRecord } from "../../lib/api/dynamodb";
 import { convertCoordsTo3Words } from "../../lib/api/geolocation";
@@ -22,7 +24,16 @@ export default function RecordForm(props: { coords: any }) {
   const [showError, setShowError] = useState(false);
 
   const handleSave = async () => {
-    console.log("Konumunuz kaydediliyor...");
+    if(!props.coords || props.coords.accuracy > 100) {
+      showNotification({
+        title: "Konumunuz yeterince güvenilir değil",
+        message: "Lütfen tekrar deneyin",
+        icon: <IconX size={18} />,
+        color: "red",
+      });
+      return;
+    }
+    
     try {
       setLoading(true);
       const loc3w = await convertCoordsTo3Words(

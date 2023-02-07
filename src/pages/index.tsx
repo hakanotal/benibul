@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import Map from "../components/Map";
 import NavbarComponent from "../components/NavbarComponent";
 import RecordForm from "../components/Form/RecordForm";
-import { showNotification } from "@mantine/notifications";
-import { IconX } from "@tabler/icons";
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(true);
@@ -19,12 +17,7 @@ const Home: NextPage = () => {
           setCoords(pos.coords);
           setLoading(false);
         } else {
-          showNotification({
-            title: "Konumunuz yeterince güvenilir değil",
-            message: "Lütfen tekrar deneyin",
-            icon: <IconX size={18} />,
-            color: "red",
-          });
+          console.error("Konumunuz yeterince güvenilir değil.");
         }
       },
       (err) => console.error(err),
