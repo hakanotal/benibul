@@ -7,6 +7,7 @@ import { useState } from "react";
 import { getAllRecords } from "../lib/api/dynamodb";
 import { showNotification } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
+import { Footer } from "../components/Footer";
 
 const Locations: NextPage = () => {
   const [loading, setLoading] = useState(true);
@@ -39,6 +40,7 @@ const Locations: NextPage = () => {
           <RecordTable data={records} />
         )}
       </Container>
+      <Footer />
     </>
   );
 };

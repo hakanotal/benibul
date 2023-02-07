@@ -47,11 +47,11 @@ export default function NavbarComponent() {
   const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
 
-  const links = [{ title: "Kayıtları Gör", href: "/records" }];
+  const links = [{ title: "Tüm Kayıtları Gör", href: "/records" }];
 
   return (
     <>
-      <Header height={64}>
+      <Header height={64} className="shadow-md">
         <Container className={classes.inner}>
           <Burger
             opened={opened}
@@ -67,10 +67,10 @@ export default function NavbarComponent() {
             ))}
           </Group>
 
-          <Link href="/">
+          <Link href="/" style={{ textDecoration: "none" }}>
             <Title
-              size={36}
-              className="bg-gradient-to-r from-blue-400 to-pink-600 bg-clip-text font-extrabold text-transparent"
+              size={42}
+              className="bg-gradient-to-r from-pink-500 to-teal-400 bg-clip-text font-extrabold text-transparent"
             >
               BeniBul
             </Title>

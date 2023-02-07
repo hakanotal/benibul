@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Map from "../components/Map";
 import NavbarComponent from "../components/NavbarComponent";
 import RecordForm from "../components/Form/RecordForm";
+import { Footer } from "../components/Footer";
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(true);
@@ -28,18 +29,18 @@ const Home: NextPage = () => {
   return (
     <>
       <NavbarComponent />
-      <Container className="flex flex-col items-center justify-center relative">
+      <Container className="relative flex flex-col items-center justify-center">
         {showForm && !loading ? (
           <RecordForm coords={coords} />
         ) : (
           <Button
-            variant="outline"
+            variant="filled"
             size="xl"
             radius="xl"
             my={32}
             onClick={() => setShowForm(true)}
           >
-            Konumumu Kaydet
+            Kayıt Oluştur
           </Button>
         )}
 
@@ -49,6 +50,8 @@ const Home: NextPage = () => {
           <Map coords={coords} />
         )}
       </Container>
+
+      <Footer />
     </>
   );
 };
