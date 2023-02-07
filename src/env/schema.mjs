@@ -18,9 +18,10 @@ export const clientSchema = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string(),
   NEXT_PUBLIC_W3W_API_URL: z.string(),
   NEXT_PUBLIC_W3W_API_KEY: z.string(),
+  NEXT_PUBLIC_DB_TABLE: z.string(),
+  NEXT_PUBLIC_DB_REGION: z.string(),
   NEXT_PUBLIC_DB_ACCESS_KEY: z.string(),
   NEXT_PUBLIC_DB_SECRET_KEY: z.string(),
-  NEXT_PUBLIC_DB_REGION: z.string(),
 });
 
 /**
@@ -33,7 +34,8 @@ export const clientEnv = {
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   NEXT_PUBLIC_W3W_API_URL: process.env.NEXT_PUBLIC_W3W_API_URL,
   NEXT_PUBLIC_W3W_API_KEY: process.env.NEXT_PUBLIC_W3W_API_KEY,
+  NEXT_PUBLIC_DB_TABLE: process.env.NEXT_PUBLIC_DB_TABLE,
+  NEXT_PUBLIC_DB_REGION: process.env.NEXT_PUBLIC_DB_REGION,
   NEXT_PUBLIC_DB_ACCESS_KEY: process.env.NEXT_PUBLIC_DB_ACCESS_KEY,
   NEXT_PUBLIC_DB_SECRET_KEY: process.env.NEXT_PUBLIC_DB_SECRET_KEY,
-  NEXT_PUBLIC_DB_REGION: process.env.NEXT_PUBLIC_DB_REGION,
 };

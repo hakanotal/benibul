@@ -47,9 +47,7 @@ export default function NavbarComponent() {
   const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
 
-  const links = [
-    { title: "Kayıtları Gör", href: "/records" },
-  ];
+  const links = [{ title: "Kayıtları Gör", href: "/records" }];
 
   return (
     <>
@@ -69,12 +67,14 @@ export default function NavbarComponent() {
             ))}
           </Group>
 
-          <Title
-            size={36}
-            className="bg-gradient-to-r from-blue-400 to-pink-600 bg-clip-text font-extrabold text-transparent"
-          >
-            BeniBul
-          </Title>
+          <Link href="/">
+            <Title
+              size={36}
+              className="bg-gradient-to-r from-blue-400 to-pink-600 bg-clip-text font-extrabold text-transparent"
+            >
+              BeniBul
+            </Title>
+          </Link>
 
           <Group
             spacing={5}

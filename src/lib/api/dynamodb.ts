@@ -1,13 +1,11 @@
-/* 
-import * as uuid from "uuid";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
-  DynamoDBClient,
-  PutItemCommand,
-  GetItemCommand,
-  UpdateItemCommand,
-  DeleteItemCommand,
-} from "@aws-sdk/client-dynamodb";
-import { env } from "../../env/server.mjs";
+  DynamoDBDocumentClient,
+  PutCommand,
+  ScanCommand,
+} from "@aws-sdk/lib-dynamodb";
+import { env } from "../../env/client.mjs";
+import { type RecordType } from "../schema/Record.js";
 
 const client = new DynamoDBClient({
   credentials: {
@@ -17,68 +15,34 @@ const client = new DynamoDBClient({
   region: env.NEXT_PUBLIC_DB_REGION,
 });
 
-export default async function handler(req, res) {
-  if (req.method === "PUT") {
-    const { Item } = await client.send(
-      new PutItemCommand({
-        TableName: process.env.TABLE_NAME,
-        Item: {
-          id: { S: uuid.v4() },
-          content: { S: req.body.content },
-        },
-      })
-    );
-
-    return res.status(201).json(Item);
-  }
-
-  if (req.method === "GET") {
-    const { Item } = await client.send(
-      new GetItemCommand({
-        TableName: process.env.TABLE_NAME,
-        Key: {
-          id: { S: req.query.id },
-        },
-      })
-    );
-
-    return res.status(200).json(Item);
-  }
-
-  if (req.method === "POST") {
-    const { Attributes } = await client.send(
-      new UpdateItemCommand({
-        TableName: process.env.TABLE_NAME,
-        Key: {
-          id: { S: req.body.id },
-        },
-        UpdateExpression: "set content = :c",
-        ExpressionAttributeValues: {
-          ":c": { S: req.body.content },
-        },
-        ReturnValues: "ALL_NEW",
-      })
-    );
-
-    return res.status(200).json(Attributes);
-  }
-
-  if (req.method === "DELETE") {
-    await client.send(
-      new DeleteItemCommand({
-        TableName: process.env.TABLE_NAME,
-        Key: {
-          id: { S: req.body.id },
-        },
-      })
-    );
-
-    return res.status(204).json({});
-  }
-}
- */
-
-const db = async () => {
-  console.log("db");
+const marshallOptions = {
+  convertEmptyValues: false,
+  removeUndefinedValues: false,
+  convertClassInstanceToMap: false,
 };
-export default db;
+
+const unmarshallOptions = {
+  wrapNumbers: false,
+};
+const translateConfig = { marshallOptions, unmarshallOptions };
+const ddbDocClient = DynamoDBDocumentClient.from(client, translateConfig);
+
+
+export const saveRecord = async (record: RecordType) => {
+  const params = {
+    TableName: env.NEXT_PUBLIC_DB_TABLE,
+    Item: record,
+  };
+
+  return await ddbDocClient.send(new PutCommand(params));
+};
+
+export const getAllRecords = async () => {
+  const params = {
+    TableName: env.NEXT_PUBLIC_DB_TABLE,
+    Select: "ALL_ATTRIBUTES",
+  };
+
+  const resp = await ddbDocClient.send(new ScanCommand(params));
+  return resp.Items;
+};

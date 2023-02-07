@@ -1,26 +1,43 @@
 import { type NextPage } from "next";
-import { Container, Title } from "@mantine/core";
+import { Container, Title, LoadingOverlay } from "@mantine/core";
 import NavbarComponent from "../components/NavbarComponent";
 import { RecordTable } from "../components/RecordTable";
 import { type RecordType } from "../lib/schema/Record";
+import { useState } from "react";
+import { getAllRecords } from "../lib/api/dynamodb";
+import { showNotification } from "@mantine/notifications";
+import { IconX } from "@tabler/icons";
 
 const Locations: NextPage = () => {
-  const mockData = [
-    {
-      name_surname: "Hakan Otal",
-      phone: "",
-      need: "Yemek",
-      nearest_place: "Eminönü, İstanbul",
-      loc_words: "günlük.belirgin.kullanışlı",
-      created_at: 1675793095,
-    },
-  ];
+  const [loading, setLoading] = useState(true);
+  const [records, setRecords] = useState<RecordType[]>([]);
+
+  useState(async () => {
+    try {
+      const allRecords = (await getAllRecords()) as RecordType[];
+      setRecords(allRecords);
+    } catch {
+      showNotification({
+        title: "Bir hata oluştu",
+        message: "Lütfen tekrar deneyin",
+        icon: <IconX size={18} />,
+        color: "red",
+      });
+    } finally {
+      setLoading(false);
+    }
+  });
+
   return (
     <>
       <NavbarComponent />
-      <Container className="flex flex-col items-center justify-center">
+      <Container className="relative flex flex-col items-center justify-center">
         <Title my={40}>Tüm Kayıtlar</Title>
-        <RecordTable data={mockData as RecordType[]} />
+        {loading ? (
+          <LoadingOverlay visible={loading} overlayBlur={2} />
+        ) : (
+          <RecordTable data={records} />
+        )}
       </Container>
     </>
   );

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Map from "../components/Map";
 import NavbarComponent from "../components/NavbarComponent";
 import RecordForm from "../components/Form/RecordForm";
+import { showNotification } from "@mantine/notifications";
+import { IconX } from "@tabler/icons";
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(true);
@@ -13,11 +15,17 @@ const Home: NextPage = () => {
   useEffect(() => {
     navigator.geolocation.watchPosition(
       (pos) => {
-        console.log(pos);
         if (pos.coords.accuracy <= 100) {
           setCoords(pos.coords);
           setLoading(false);
-        } else console.error("Konumunuz yeterince güvenilir değil!");
+        } else {
+          showNotification({
+            title: "Konumunuz yeterince güvenilir değil",
+            message: "Lütfen tekrar deneyin",
+            icon: <IconX size={18} />,
+            color: "red",
+          });
+        }
       },
       (err) => console.error(err),
       { enableHighAccuracy: true, timeout: 30000 }
@@ -27,7 +35,7 @@ const Home: NextPage = () => {
   return (
     <>
       <NavbarComponent />
-      <Container className="flex flex-col items-center justify-center">
+      <Container className="flex flex-col items-center justify-center relative">
         {showForm && !loading ? (
           <RecordForm coords={coords} />
         ) : (

@@ -7,6 +7,7 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { useState } from "react";
+import { saveRecord } from "../../lib/api/dynamodb";
 import { convertCoordsTo3Words } from "../../lib/api/geolocation";
 import { Record } from "../../lib/schema/Record";
 import { ErrorForm } from "./ErrorForm";
@@ -39,10 +40,7 @@ export default function RecordForm(props: { coords: any }) {
       });
       if (!record.success) throw record.error;
 
-      console.log(record.data);
-
-      // const res = await saveToDB(record.data);
-      // if (!res.success) throw res.error;
+      await saveRecord(record.data);
 
       setShowSuccess(true);
     } catch (err) {
